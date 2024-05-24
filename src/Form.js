@@ -19,6 +19,9 @@ const Form = () => {
   const passwordValidator = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
   const aadharValidator = /^\d{12}$/;
   const panValidator = /^[A-Z0-9]{10}$/;
+  const nameValidator =/^[A-Za-z]/
+  const phonenoValidator = /^[0-9]{10}$/;
+
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -57,8 +60,18 @@ const Form = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.firstName) newErrors.firstName = 'First name is required';
-    if (!formData.lastName) newErrors.lastName = 'Last name is required';
+    if (!formData.firstName) {
+        newErrors.firstName = 'First name is required';
+    } else if (!nameValidator.test(formData.firstName)) {
+        newErrors.firstName = 'Invalid input';
+    }
+    
+    if (!formData.lastName) {
+        newErrors.lastName = 'First name is required';
+    } else if (!nameValidator.test(formData.lastName)) {
+        newErrors.lastName = 'Invalid input';
+    }
+    
     if (!formData.username) newErrors.username = 'Username is required';
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -70,7 +83,14 @@ const Form = () => {
     } else if (!passwordValidator.test(formData.password)) {
       newErrors.password = 'Password must be at least 8 characters long, contain at least one number, one uppercase letter, and one lowercase letter';
     }
-    if (!formData.phoneNo) newErrors.phoneNo = 'Phone number is required';
+    
+
+    if (!formData.phoneNo) {
+        newErrors.phoneNo = 'Phone number is required';
+      } else if (!phonenoValidator.test(formData.phoneNo)) {
+        newErrors.phoneNo = 'Phone number must be a 10-digit number';
+      }
+
     if (!formData.country) newErrors.country = 'Country is required';
     if (!formData.city) newErrors.city = 'City is required';
     if (!formData.panNo) {
@@ -203,9 +223,7 @@ const Form = () => {
         />
         {errors.aadharNo && <span>{errors.aadharNo}</span>}
       </div>
-      <button type="submit" disabled={Object.keys(errors).length > 0}>
-        Submit
-      </button>
+      <button type="submit">Submit</button>
     </form>
   );
 };
